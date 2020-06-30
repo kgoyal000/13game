@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>New Document</title>
+      <style>
+		html, body, div, span, 
+		h1, h2, h3, p{
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			color: black;
+			font: inherit;
+			vertical-align: baseline;
+		}		
+      body{
+		  box-sizing: border-box;
+		  margin: 0;
+		  text-align: center;
+	  }
+      .mainHolder {
+      	width: 100%;
+      	max-width: 1020px;
+      	margin: 40px auto;
+      	border: 2px solid #b9ac92;
+      }	
+      .title {
+      	border-bottom: 2px solid #b9ac92;
+		  padding: 10px;
+		  text-align: center;
+		  font-size: 2rem;
+      }
+      .instructions {
+		text-align: center;
+      	border-bottom: 2px solid #b9ac92;
+      	padding: 10px;
+      }
+      .suitBoxes {
+      	display: flex;
+      	flex-direction: row;
+      	justify-content: space-around;
+      	margin-top: 15px;
+      	margin-bottom: 15px;
+      	padding: 5px;
+      	border-bottom: 2px solid #b9ac92;
+      }
+      .suitOne, 
+      .suitTwo, 
+      .suitThree, 
+      .suitFour {
+      	padding: 40px;
+      	font-size: 2.5rem;
+      	border: 1px solid black;
+      	margin-bottom: 20px;
+      }
+      .guessBoxes {
+      	display: flex;
+      	flex-direction: row;
+      	justify-content: space-around;
+      	padding: 5px;
+      	margin-top: 15px;
+      	margin-bottom: 15px;
+      	border-bottom: 2px solid #b9ac92;
+      }
+      .guess {
+		  text-align: center;
+      	padding: 20px;
+		  margin-bottom: 25px;
+		  font-weight: bold;
+		  cursor: pointer;
+      	border: 1px solid black;
+      }
+      .guess:hover {
+      	border: 2px solid #000000;
+      }
+      .outcome {
+      	height: 45px;
+      	padding: 5px;
+      	margin-top: 15px;
+      	border-bottom: 2px solid #b9ac92;
+      }
+      .newHand {
+      	padding: 5px;
+      }
+      .newHandButton:hover {
+      	background-color: grey;
+      	cursor: pointer;
+      }
+      .outcomeText {
+      	text-align: center;
+      }
+      .newHandText {
+      	padding: 12px;
+	  }
+	  .green{
+		  color: green;
+	  }
+	  .red{
+		  color: red;
+	  }
+      </style>
+   </head>
+<body>
+<div class="mainHolder">
+	<div class="title">
+		<h1>The Counting Game</h1>
+	</div>
+	<div class="instructions">
+		<p>Instructions on how to play</p>
+	</div>
+	<div class="suitBoxes"> 
+		<div id="box1" class="suitOne">-</div>
+		<div id="box2" class="suitTwo">-</div>
+		<div id="box3" class="suitThree">-</div>
+		<div id="box4" class="suitFour">?</div>
+	</div>
+	<div class="guessBoxes">
+		<div class="guess" onclick="checkAnswer(0)">0</div>
+		<div class="guess" onclick="checkAnswer(1)">1</div>
+		<div class="guess" onclick="checkAnswer(2)">2</div>
+		<div class="guess" onclick="checkAnswer(3)">3</div>
+		<div class="guess" onclick="checkAnswer(4)">4</div>
+		<div class="guess" onclick="checkAnswer(5)">5</div>
+		<div class="guess" onclick="checkAnswer(6)">6</div>
+		<div class="guess" onclick="checkAnswer(7)">7</div>
+	</div>
+	<div class="outcome">
+		<p class="outcomeText" id="outcomeText">Result</p>
+	</div>
+	<div class="newHand">
+			<button class="newHandText" onclick="generateNumbers()">Generate New Hand</button>
+	</div>
+</div>
+<script>
+	var box1 = document.getElementById('box1');
+	var box2 = document.getElementById('box2');
+	var box3 = document.getElementById('box3');
+
+	var box1Number,box2Number,box3Number;
+
+	function generateNumbers(){
+	//	Generating Random Number between 0 to 7 for box1
+	box1Number = Math.floor(Math.random()*8);
+
+	//if box1 has value 7 then box2 have value less than 7 because 7+7 is 14 so box2 has values from 0 to 6
+	if(box1Number > 6){
+		box2Number = Math.floor(Math.random()*7);
+	}else{ // if value is less than 7 box2 can have all values upto 7
+		box2Number = Math.floor(Math.random()*8);
+	}
+	
+	if((box1Number+box2Number)<6){ // if box1 + box2 has value less than 6 then box3 must be greater than 6
+		box3Number = (6-(box1Number+box2Number))+ Math.floor(Math.random()*(7 - (6-(box1Number+box2Number))));
+	}else if((box1Number+box2Number)==13){// if box1 + box2 already got 13 then box3 must be 0
+		box3Number = 0;
+	}else{ //if box1 + box2 value is between 6 and 12 then box3 value can go between 0 to max value of box1+box2
+		box3Number = Math.floor(Math.random()*(13-(box1Number+box2Number)));
+	}
+
+	//filling boxes with these numbers
+	box1.innerHTML = box1Number;
+	box2.innerHTML = box2Number;
+	box3.innerHTML = box3Number;
+	document.getElementById('outcomeText').innerHTML = 'Result!';
+	
+	//Removing colors of correct/incorrect on every new question
+	document.getElementById('outcomeText').classList.remove('green');
+	document.getElementById('outcomeText').classList.remove('red');
+
+	//Adding ? to last box on new questions
+	document.getElementById('box4').innerHTML = '?';
+}
+
+function checkAnswer(answerClicked){
+	//Adding click answer to box4
+	document.getElementById('box4').innerHTML = answerClicked;
+	//Removing classes if present on every answer click
+	document.getElementById('outcomeText').classList.remove('green');
+	document.getElementById('outcomeText').classList.remove('red');
+	if((box1Number + box2Number + box3Number + answerClicked) != 13){  // if sum of all is not 13 then its incorrect
+		document.getElementById('outcomeText').innerHTML = 'INCORRECT!'; //Adding incorrect text
+		document.getElementById('outcomeText').classList.add('red'); //Adding red color
+	}else{// if sum of all is 13 then its correct
+		document.getElementById('outcomeText').innerHTML = 'CORRECT!';//Adding correct text
+		document.getElementById('outcomeText').classList.add('green');//Adding green color
+	}
+}
+
+</script>
+</body>
+</html>
+
+
+
+
