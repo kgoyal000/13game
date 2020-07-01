@@ -49,8 +49,8 @@
       .suitTwo, 
       .suitThree, 
       .suitFour {
-      	padding: 40px;
-      	font-size: 2.5rem;
+      	padding: 35px;
+      	font-size: 2.2rem;
       	border: 1px solid black;
       	margin-bottom: 20px;
       }
@@ -65,7 +65,7 @@
       }
       .guess {
 		  text-align: center;
-      	padding: 20px;
+      	padding: 14px;
 		  margin-bottom: 25px;
 		  font-weight: bold;
 		  cursor: pointer;
@@ -116,6 +116,7 @@
 		<div id="box4" class="suitFour">?</div>
 	</div>
 	<div class="guessBoxes">
+		<!-- Onclick of any guess box checkAnswer will be called with their value in parameters -->
 		<div class="guess" onclick="checkAnswer(0)">0</div>
 		<div class="guess" onclick="checkAnswer(1)">1</div>
 		<div class="guess" onclick="checkAnswer(2)">2</div>
@@ -129,6 +130,7 @@
 		<p class="outcomeText" id="outcomeText">Result</p>
 	</div>
 	<div class="newHand">
+		<!-- onclick function generate number will be called everytime -->
 			<button class="newHandText" onclick="generateNumbers()">Generate New Hand</button>
 	</div>
 </div>
@@ -179,18 +181,13 @@ function checkAnswer(answerClicked){
 	document.getElementById('outcomeText').classList.remove('green');
 	document.getElementById('outcomeText').classList.remove('red');
 	if((box1Number + box2Number + box3Number + answerClicked) != 13){  // if sum of all is not 13 then its incorrect
-		document.getElementById('outcomeText').innerHTML = 'INCORRECT!'; //Adding incorrect text
+		document.getElementById('outcomeText').innerHTML = 'INCORRECT! ('+ parseInt(13- (box1Number + box2Number + box3Number))+')'; //Adding incorrect text
 		document.getElementById('outcomeText').classList.add('red'); //Adding red color
 	}else{// if sum of all is 13 then its correct
 		document.getElementById('outcomeText').innerHTML = 'CORRECT!';//Adding correct text
 		document.getElementById('outcomeText').classList.add('green');//Adding green color
 	}
 }
-
 </script>
 </body>
 </html>
-
-
-
-
